@@ -1,6 +1,6 @@
 {
   "name": "stopwatch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple desktop stopwatch apps",
   "keywords": [
     "electron",
