@@ -1,5 +1,7 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "name": "stopwatch",
+  "version": "0.0.1",
+  "description": "simple desktop stopwatch apps",
   "keywords": [
     "electron",
     "boilerplate",
@@ -247,8 +249,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "i33w",
+      "repo": "WindowStopwatch"
     }
   },
   "collective": {
