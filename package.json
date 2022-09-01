@@ -1,6 +1,4 @@
 {
-  "name": "stopwatch",
-  "version": "0.0.2",
   "description": "simple desktop stopwatch apps",
   "keywords": [
     "electron",
@@ -230,7 +228,7 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "msi"
       ]
     },
     "linux": {
