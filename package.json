@@ -236,7 +236,7 @@
       "oneClick": true,
       "perMachine": true,
       "language": 1042,
-      "include": "build/installer-dev.nsh"
+      "include": "installer.nsh"
     },
     "linux": {
       "target": [
