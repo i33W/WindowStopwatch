@@ -231,6 +231,13 @@
         "nsis"
       ]
     },
+    "nsis": {
+      "createDesktopShortcut": "always",
+      "oneClick": true,
+      "perMachine": true,
+      "language": 1042,
+      "include": "build/installer-dev.nsh"
+    },
     "linux": {
       "target": [
         "AppImage"
