@@ -9,17 +9,102 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  dialog,
+  webContents,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+autoUpdater.autoDownload = false;
+
+autoUpdater.requestHeaders = {
+  'Cache-Control':
+    'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+};
+
+autoUpdater.on('error', (error) => {
+  dialog.showErrorBox(
+    'Error: ',
+    error == null ? 'unknown' : (error.stack || error).toString()
+  );
+});
+
+autoUpdater.on('update-available', () => {
+  dialog
+    .showMessageBox({
+      title: '업데이트 확인',
+      message: '새로운 업데이트가 있습니다. 지금 다운로드 받으시겠습니까?',
+      icon: path.join(__dirname, '../../renderer/img/favicon.ico'),
+      buttons: ['아니요', '예'],
+    })
+    .then((buttonIndex) => {
+      if (buttonIndex.response === 1) {
+        dialog.showMessageBox({
+          title: '업데이트 다운로드',
+          message: '업데이트 다운로드를 시작합니다. 잠시만 기다려주세요.',
+          icon: path.join(__dirname, '../../renderer/img/favicon.ico'),
+        });
+        // 업데이트 창켜기
+        webContents.getAllWebContents().map((win) => {
+          if (win.getTitle().slice(0, 6) === 'index_')
+            win.send('updateDivOpen');
+          return win;
+        });
+        autoUpdater.downloadUpdate();
+      } else {
+        dialog.showMessageBox({
+          title: '업데이트 다운로드',
+          message: '업데이트 다운로드를 취소하였습니다.',
+          icon: path.join(__dirname, '../../renderer/img/favicon.ico'),
+        });
+      }
+    })
+    .catch((err) => {
+      dialog.showMessageBox({
+        title: 'Error',
+        message: `에러입니다: ${err}`,
+      });
+    });
+});
+
+autoUpdater.on('update-not-available', () => {
+  // dialog.showMessageBox({
+  //   title: '업데이트 확인',
+  //   message: '현재 최신 버전입니다.',
+  // icon: path.join(__dirname, '../../renderer/img/favicon.ico'),
+  // })
+});
+
+autoUpdater.on('update-downloaded', () => {
+  dialog
+    .showMessageBox({
+      title: '업데이트 설치',
+      message: '업데이트를 위해 어플리케이션이 종료됩니다.',
+      icon: path.join(__dirname, '../../renderer/img/favicon.ico'),
+    })
+    .then(() => {
+      setImmediate(() => autoUpdater.quitAndInstall());
+    })
+    .catch((err) => {
+      dialog.showMessageBox({
+        title: 'Error',
+        message: `에러입니다: ${err}`,
+      });
+    });
+});
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdates();
   }
 }
 
