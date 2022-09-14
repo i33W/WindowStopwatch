@@ -190,42 +190,12 @@
   "build": {
     "productName": "WindowStopwatch",
     "appId": "com.github.i33w.WindowStopwatch",
-    "asar": true,
-    "asarUnpack": "**\\*.{node,dll}",
+    "asar": false,
     "files": [
       "dist",
       "node_modules",
       "package.json"
     ],
-    "afterSign": ".erb/scripts/notarize.js",
-    "mac": {
-      "target": {
-        "target": "default",
-        "arch": [
-          "arm64",
-          "x64"
-        ]
-      },
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "entitlements": "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist",
-      "gatekeeperAssess": false
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
     "win": {
       "target": [
         "nsis"
@@ -257,9 +227,6 @@
       "owner": "i33w",
       "repo": "WindowStopwatch"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
