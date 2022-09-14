@@ -228,7 +228,7 @@
     },
     "win": {
       "target": [
-        "x64"
+        "nsis"
       ]
     },
     "linux": {
